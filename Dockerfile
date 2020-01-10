@@ -33,7 +33,7 @@ RUN yum install -y deltarpm tzdata lsb-release bison tcl dpatch chrpath flex gfo
                    xorg-x11-util-macros libpciaccess-devel numactl libxml2-devel gettext help2man libuuid-devel libjpeg* && \
     yum install -y centos-release-scl && \
     yum-config-manager --enable rhel-server-rhscl-7-rpms && \
-    yum install -y devtoolset-7 devtoolset-8 && \
+    yum install -y devtoolset-7-gcc devtoolset-7-gcc-c++ devtoolset-7-gcc-gfortran devtoolset-8-gcc devtoolset-8-gcc-c++ devtoolset-8-gcc-gfortran \
     yum clean all
 
 RUN tar -xvf MLNX_OFED_LINUX-${MOFED_VERSION}-${OS_VERSION}-${PLATFORM}.tgz && \
@@ -82,7 +82,7 @@ RUN git clone https://github.com/Goddard-Fortran-Ecosystem/gFTL.git /gFTL \
 
 RUN mkdir -p /opt/ibm/lsfsuite/lsf/conf/ && \
     touch /opt/ibm/lsfsuite/lsf/conf/profile.lsf && \
-    . /etc/bashrc && /spack/bin/spack install nco ^hdf5 ^openmpi schedulers=lsf fabrics=ucx
+    . /etc/bashrc && spack install nco ^hdf5 ^openmpi schedulers=lsf fabrics=ucx
 
 RUN rm -fr /opt/ibm
 
@@ -100,13 +100,13 @@ RUN yum groupinstall -y 'Development Tools' \
 && ln -s /usr/bin/cmake3 /usr/bin/cmake \
 && export ZSH=/usr/share/oh-my-zsh \
 && wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh \
-&& yum install -y centos-release-scl && \
-&& yum-config-manager --enable rhel-server-rhscl-7-rpms && \
-&& yum install -y devtoolset-7 devtoolset-8 && \
+&& yum install -y centos-release-scl \
+&& yum-config-manager --enable rhel-server-rhscl-7-rpms \
+&& yum install -y devtoolset-7-gcc devtoolset-7-gcc-c++ devtoolset-7-gcc-gfortran devtoolset-8-gcc devtoolset-8-gcc-c++ devtoolset-8-gcc-gfortran \
 && yum install -y tzdata lsb-release bison tcl dpatch chrpath flex gfortran autoconf kmod tk ethtool graphviz lsof swig libgfortran3 automake pciutils \
                    openssl-devel.x86_64 openssl-libs.x86_64 numactl-libs.x86_64 numactl-devel.x86_64 libtool-ltdl.x86_64 libtool-ltdl-devel.x86_64 libmnl.x86_64 \
                    libnl3 gcc-gfortran tcsh mesa-libOSMesa.x86_64 mesa-libOSMesa-devel.x86_64 logrotate \
-                   cmake openmpi2.x86_64 openmpi2-devel.x86_64 libtiff-devel.x86_64 fftw-devel.x86_64 libsss_nss_idmap.x86_64 gcc-c++ gcc-gfortran \
+                   openmpi2.x86_64 openmpi2-devel.x86_64 libtiff-devel.x86_64 fftw-devel.x86_64 libsss_nss_idmap.x86_64 gcc-c++ gcc-gfortran \
                    autoconf automake flex bison make python environment-modules patch libsigsegv libtool texinfo findutils \
                    xorg-x11-util-macros libpciaccess-devel numactl libxml2-devel gettext help2man libuuid-devel libjpeg* && \
     yum clean all
