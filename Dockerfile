@@ -61,12 +61,12 @@ COPY spack/etc/spack/compilers.yaml /etc/spack/compilers.yaml
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/intel/bin:$SPACK_ROOT/bin
 # Install ESMF
 RUN for i in $(spack find target=x86_64 | grep -v "^--" | grep -v "^=="); do spack uninstall --dependents -y $i target=x86_64; done
-RUN spack install -v netcdf-c ^hdf5 ^openmpi schedulers=lsf fabrics=ucx +thread_multiple
-RUN spack install -v netcdf-fortran ^hdf5 ^openmpi schedulers=lsf fabrics=ucx
+RUN spack install -v netcdf-c ^hdf5 +fortran ^openmpi schedulers=lsf fabrics=ucx +thread_multiple
+RUN spack install -v netcdf-fortran ^hdf5 +fortran ^openmpi schedulers=lsf fabrics=ucx +thread_multiple
 RUN spack load hdf5
 RUN spack load netcdf-c
 RUN spack load netcdf-fortran
-RUN spack install --no-checksum esmf@8.0.0 -lapack -pio -pnetcdf -xerces ^hdf5 ^openmpi schedulers=lsf fabrics=ucx +thread_multiple
+RUN spack install --no-checksum esmf@8.0.0 -lapack -pio -pnetcdf -xerces ^hdf5 +fortran ^openmpi schedulers=lsf fabrics=ucx +thread_multiple
 RUN  yum install -y zsh wget vim cmake3 sssd gcc c++ g++ \
 &&  rm /usr/bin/cmake && ln -s /usr/bin/cmake3 /usr/bin/cmake
 
