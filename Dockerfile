@@ -11,7 +11,8 @@ ENV PLATFORM x86_64
 RUN yum groupinstall -y 'Development Tools' &&  yum install -y epel-release
 # https://ius.io/ Inline with Upstream Stable
 RUN yum -y install https://repo.ius.io/ius-release-el7.rpm
-RUN  yum -y remove git* && yum -y install  git2u-all
+RUN yum -y remove git*
+RUN yum -y install  git2u-all
 RUN yum install -y zsh wget vim cmake3 sssd gcc c++ g++
 RUN  ln -s /usr/bin/cmake3 /usr/bin/cmake
 RUN export ZSH=/usr/share/oh-my-zsh
