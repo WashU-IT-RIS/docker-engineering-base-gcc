@@ -61,7 +61,7 @@ COPY spack/etc/spack/compilers.yaml /etc/spack/compilers.yaml
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/intel/bin:$SPACK_ROOT/bin
 # Install ESMF
 RUN for i in $(spack find target=x86_64 | grep -v "^--" | grep -v "^=="); do spack uninstall --dependents -y $i target=x86_64; done
-RUN spack install -v netcdf-c ^hdf5 ^openmpi schedulers=lsf fabrics=ucx && \
+RUN spack install -v netcdf-c ^hdf5 ^openmpi schedulers=lsf fabrics=ucx +thread_multiple
 RUN spack install -v netcdf-fortran ^hdf5 ^openmpi schedulers=lsf fabrics=ucx
 RUN spack load hdf5
 RUN spack load netcdf-c
