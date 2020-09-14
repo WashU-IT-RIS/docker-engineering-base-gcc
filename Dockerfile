@@ -8,16 +8,16 @@ ENV MOFED_VERSION 4.7-3.2.9.0
 ENV OS_VERSION rhel7.7
 ENV PLATFORM x86_64
 
-RUN yum groupinstall -y 'Development Tools' \
-&&  yum install -y epel-release \
-&&  yum -y install  https://centos7.iuscommunity.org/ius-release.rpm \
-&&  yum -y remove git* && yum -y install  git2u-all \
-&&  yum install -y zsh wget vim cmake3 sssd gcc c++ g++ \
-&&  ln -s /usr/bin/cmake3 /usr/bin/cmake \
-&&  export ZSH=/usr/share/oh-my-zsh \
-&&  wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh \
-&&  yum clean -y all \
-&&  chmod 755 /etc/bashrc /etc/zshenv
+RUN yum groupinstall -y 'Development Tools' &&  yum install -y epel-release
+# https://ius.io/ Inline with Upstream Stable
+RUN yum -y install https://repo.ius.io/ius-release-el7.rpm
+RUN  yum -y remove git* && yum -y install  git2u-all
+RUN yum install -y zsh wget vim cmake3 sssd gcc c++ g++
+RUN  ln -s /usr/bin/cmake3 /usr/bin/cmake
+RUN export ZSH=/usr/share/oh-my-zsh
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
+RUN yum clean -y all
+RUN chmod 755 /etc/bashrc /etc/zshenv
 RUN cd /opt && git clone https://github.com/spack/spack.git
 
 
