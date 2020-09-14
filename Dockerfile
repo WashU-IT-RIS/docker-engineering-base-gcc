@@ -66,7 +66,7 @@ RUN spack install -v netcdf-fortran ^hdf5 ^openmpi schedulers=lsf fabrics=ucx
 RUN spack load hdf5
 RUN spack load netcdf-c
 RUN spack load netcdf-fortran
-RUN spack install --no-checksum esmf@8.0.0 -lapack -pio -pnetcdf -xerces ^hdf5 ^openmpi schedulers=lsf fabrics=ucx
+RUN spack install --no-checksum esmf@8.0.0 -lapack -pio -pnetcdf -xerces ^hdf5 ^openmpi schedulers=lsf fabrics=ucx +thread_multiple
 RUN  yum install -y zsh wget vim cmake3 sssd gcc c++ g++ \
 &&  rm /usr/bin/cmake && ln -s /usr/bin/cmake3 /usr/bin/cmake
 
