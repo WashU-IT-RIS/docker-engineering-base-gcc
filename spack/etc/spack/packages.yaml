@@ -119,7 +119,7 @@ packages:
       gcc@4: /usr
   lsf:
     paths:
-      lsf@10.1: /opt/ibm/lsfsuite/lsf/10.1/linux2.6-glibc2.3-x86_64
+      lsf@10.1: /opt/ibm/lsfsuite/lsf/10.1
     buildable: False
   all:
     compiler: [ gcc@8 ]
