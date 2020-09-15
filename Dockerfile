@@ -10,8 +10,8 @@ ENV PLATFORM x86_64
 
 RUN yum groupinstall -y 'Development Tools' \
 &&  yum install -y epel-release \
-&&  yum -y install  https://centos7.iuscommunity.org/ius-release.rpm \
-&&  yum -y remove git* && yum -y install  git2u-all \
+&&  yum -y install  https://repo.ius.io/ius-release-el7.rpm \
+&&  yum -y remove git* && yum -y --enablerepo=ius-archive install  git2u-all \
 &&  yum install -y zsh wget vim cmake3 sssd gcc c++ g++ \
 &&  ln -s /usr/bin/cmake3 /usr/bin/cmake \
 &&  export ZSH=/usr/share/oh-my-zsh \
@@ -60,14 +60,14 @@ COPY spack/etc/spack/compilers.yaml /etc/spack/compilers.yaml
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/intel/bin:$SPACK_ROOT/bin
 # Install ESMF
 RUN for i in $(spack find target=x86_64 | grep -v "^--" | grep -v "^=="); do spack uninstall --dependents -y $i target=x86_64; done && \
-    spack bootstrap && \
-    spack install -v netcdf-c ^hdf5 ^openmpi schedulers=lsf fabrics=ucx && \
-    spack install -v netcdf-fortran ^hdf5 ^openmpi schedulers=lsf fabrics=ucx
+    spack install -v netcdf-c ^hdf5 +fortran ^openmpi schedulers=lsf fabrics=ucx +thread_multiple ^ucx@1.6.1+thread_multiple && \
+    spack install -v netcdf-fortran ^hdf5 +fortran ^openmpi schedulers=lsf fabrics=ucx +thread_multiple ^ucx@1.6.1+thread_multiple
 
-RUN spack load hdf5 && \
+RUN . /opt/spack/share/spack/setup-env.sh && \
+    spack load hdf5 && \
     spack load netcdf-c && \
     spack load netcdf-fortran && \
-    spack install  --no-checksum esmf@8.0.0 -lapack -pio -pnetcdf -xerces ^hdf5 ^openmpi schedulers=lsf fabrics=ucx
+    spack install  --no-checksum esmf@8.0.0 -lapack -pio -pnetcdf -xerces ^hdf5 +fortran ^openmpi schedulers=lsf fabrics=ucx +thread_multiple ^ucx@1.6.1+thread_multiple
 RUN  yum install -y zsh wget vim cmake3 sssd gcc c++ g++ \
 &&  rm /usr/bin/cmake && ln -s /usr/bin/cmake3 /usr/bin/cmake
 
@@ -82,7 +82,7 @@ RUN git clone https://github.com/Goddard-Fortran-Ecosystem/gFTL.git /gFTL \
 
 RUN mkdir -p /opt/ibm/lsfsuite/lsf/conf/ && \
     touch /opt/ibm/lsfsuite/lsf/conf/profile.lsf && \
-    . /etc/bashrc && spack install nco ^hdf5 ^openmpi schedulers=lsf fabrics=ucx
+    . /etc/bashrc && spack install nco ^hdf5 +fortran ^openmpi schedulers=lsf fabrics=ucx +thread_multiple ^ucx@1.6.1+thread_multiple
 
 RUN rm -fr /opt/ibm
 
@@ -94,8 +94,8 @@ COPY --from=build /etc/zshenv /etc/zshenv
 
 RUN yum groupinstall -y 'Development Tools' \
 && yum install -y epel-release \
-&& yum -y install  https://centos7.iuscommunity.org/ius-release.rpm \
-&& yum -y remove git* && yum -y install  git2u-all \
+&& yum -y install  https://repo.ius.io/ius-release-el7.rpm \
+&& yum -y remove git* && yum -y --enablerepo=ius-archive install  git2u-all \
 && yum install -y zsh wget vim cmake3 sssd gcc c++ g++ \
 && ln -s /usr/bin/cmake3 /usr/bin/cmake \
 && export ZSH=/usr/share/oh-my-zsh \
