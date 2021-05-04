@@ -91,6 +91,7 @@ COPY --from=build /opt /opt
 COPY --from=build /etc/ssh/ssh_config /etc/ssh/ssh_config
 COPY --from=build /etc/bashrc /etc/bashrc
 COPY --from=build /etc/zshenv /etc/zshenv
+COPY --from=build /etc/spack /etc/spack
 
 RUN yum groupinstall -y 'Development Tools' \
 && yum install -y epel-release \
