@@ -4,7 +4,7 @@ COPY ./rc/bashrc /etc/bashrc
 COPY ./rc/zshenv /etc/zshenv
 
 # Set MOFED version, OS version and platform
-ENV MOFED_VERSION 4.7-3.2.9.0
+ENV MOFED_VERSION 5.4-3.1.0.0
 ENV OS_VERSION rhel7.7
 ENV PLATFORM x86_64
 
@@ -16,12 +16,13 @@ RUN yum groupinstall -y 'Development Tools' \
 &&  ln -s /usr/bin/cmake3 /usr/bin/cmake \
 &&  export ZSH=/usr/share/oh-my-zsh \
 &&  wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh \
+&&  wget ftp://ftp.hdfgroup.org/lib-external/szip/2.0/src/szip-2.0.tar.gz \
 &&  yum clean -y all \
 &&  chmod 755 /etc/bashrc /etc/zshenv
 RUN cd /opt && git clone https://github.com/spack/spack.git
 
 
-# Download and install Mellanox OFED 4.5-1.0.1.0
+# Download and install Mellanox OFED 5.4-3.1.0.0
 
 RUN wget http://content.mellanox.com/ofed/MLNX_OFED-${MOFED_VERSION}/MLNX_OFED_LINUX-${MOFED_VERSION}-${OS_VERSION}-${PLATFORM}.tgz
 
@@ -62,7 +63,7 @@ ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/intel
 # Install ESMF
 RUN for i in $(spack find target=x86_64 | grep -v "^--" | grep -v "^=="); do spack uninstall --dependents -y $i target=x86_64; done && \
     mv /usr/bin/cmake /usr/bin/cmake2 && \
-    ln -s /usr/bin/cmake3 /usr/bin/cmake && \
+  /redirect  ln -s /usr/bin/cmake3 /usr/bin/cmake && \
     source /opt/rh/devtoolset-8/enable && \
     spack install -v netcdf-c ^hdf5 +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple && \
     spack install -v netcdf-fortran ^hdf5 +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple
