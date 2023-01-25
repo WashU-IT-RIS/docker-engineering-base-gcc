@@ -12,8 +12,6 @@ on:
 
 jobs:
   engineering-base:
-    needs: changes
-    if: ${{ needs.changes.outputs.engineering-base == 'true' }}      
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
