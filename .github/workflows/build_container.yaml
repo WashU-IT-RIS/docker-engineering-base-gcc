@@ -1,5 +1,5 @@
 ---
-name: 'Pull Request Build Check'
+name: 'Build and Push'
 
 on:
   workflow_dispatch:
@@ -37,7 +37,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/setup-buildx-actions@v2
+      - uses: docker/setup-buildx-action@v2
       - uses: docker/build-push-action@v3
         with:
           file: Dockerfile
