@@ -3,29 +3,15 @@ name: 'Pull Request Build Check'
 
 on:
   pull_request:
+    paths:
+      - '/spack/**'
+      - '/rc/**'
+      - 'lsf/**'
+      - '*.pl'
+      - 'Dockerfile'
 
 jobs:
-  changes:
-    name: Diff check
-    runs-on: ubuntu-20.04
-    outputs:
-      engineering-base: ${{ steps.filter.outputs.engineering-base }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            engineering-base: 
-              - '/spack/**'
-              - '/rc/**'
-              - 'lsf/**'
-              - '*.pl'
-              - 'Dockerfile'
-
-  engineering-base:
-    needs: changes
-    if: ${{ needs.changes.outputs.engineering-base == 'true' }}      
+  engineering-base:    
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
