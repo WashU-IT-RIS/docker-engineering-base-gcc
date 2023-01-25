@@ -2,7 +2,9 @@
 name: 'Pull Request Build Check'
 
 on:
-  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   changes:
