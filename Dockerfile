@@ -64,14 +64,14 @@ RUN for i in $(spack find target=x86_64 | grep -v "^--" | grep -v "^=="); do spa
     mv /usr/bin/cmake /usr/bin/cmake2 && \
     ln -s /usr/bin/cmake3 /usr/bin/cmake && \
     source /opt/rh/devtoolset-8/enable && \
-    spack install -v netcdf-c ^hdf5 +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple && \
-    spack install -v netcdf-fortran ^hdf5 +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple
+    spack install -v netcdf-c ^hdf5 +szip +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple && \
+    spack install -v netcdf-fortran ^hdf5 +szip +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple
 
 RUN . /opt/spack/share/spack/setup-env.sh && \
     spack load hdf5 && \
     spack load netcdf-c && \
     spack load netcdf-fortran && \
-    spack install  --no-checksum esmf@8.0.0 -pio -pnetcdf -xerces ^hdf5 +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple
+    spack install  --no-checksum esmf@8.0.0 -pio -pnetcdf -xerces ^hdf5 +szip +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple
 RUN  yum install -y zsh wget vim cmake3 sssd gcc c++ g++ \
 &&  rm /usr/bin/cmake && ln -s /usr/bin/cmake3 /usr/bin/cmake
 
@@ -86,7 +86,7 @@ RUN git clone https://github.com/Goddard-Fortran-Ecosystem/gFTL.git /gFTL \
 
 RUN mkdir -p /opt/ibm/lsfsuite/lsf/conf/ && \
     touch /opt/ibm/lsfsuite/lsf/conf/profile.lsf && \
-    . /etc/bashrc && spack install nco ^hdf5 +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple
+    . /etc/bashrc && spack install nco ^hdf5 +szip +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple
 
 RUN rm -fr /opt/ibm
 
