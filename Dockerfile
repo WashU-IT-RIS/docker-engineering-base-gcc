@@ -64,6 +64,7 @@ RUN for i in $(spack find target=x86_64 | grep -v "^--" | grep -v "^=="); do spa
     mv /usr/bin/cmake /usr/bin/cmake2 && \
     ln -s /usr/bin/cmake3 /usr/bin/cmake && \
     source /opt/rh/devtoolset-8/enable && \
+    spack install -v hdf5 +szip +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple && \
     spack install -v netcdf-c ^hdf5 +szip +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple && \
     spack install -v netcdf-fortran ^hdf5 +szip +fortran ^openmpi@3.1.6 schedulers=lsf fabrics=ucx ^ucx@1.6.1+thread_multiple
 
